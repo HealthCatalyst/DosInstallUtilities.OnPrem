@@ -99,7 +99,7 @@ function SetupNewNode()
 
     WriteToConsole "docker versions available in repo "
     sudo yum -y --showduplicates list docker-ce
-    sudo yum -y --showduplicates list docker-ce-selinux
+    sudo yum -y --showduplicates list container-selinux
 
     # https://saurabh-deochake.github.io/posts/2017/07/post-1/
     WriteToConsole "setting selinux to disabled so kubernetes can work"
@@ -111,10 +111,10 @@ function SetupNewNode()
     Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
     # need to pass --setpot=obsoletes=0 due to this bug: https://github.com/docker/for-linux/issues/20#issuecomment-312122325
 
-    sudo yum install -y --setopt=obsoletes=0 docker-ce-${dockerversion}.el7.centos docker-ce-selinux-${dockerselinuxversion}.el7.centos
+    sudo yum install -y --setopt=obsoletes=0 docker-ce-${dockerversion}.el7.centos container-selinux${dockerselinuxversion}.el7
 
     # installYumPackages "docker-ce-${dockerversion}.el7.centos docker-ce-selinux-${dockerversion}.el7.centos"
-    lockPackageVersion "docker-ce docker-ce-selinux"
+    lockPackageVersion "docker-ce container-selinux"
 
     # https://kubernetes.io/docs/setup/independent/install-kubeadm/
     # log rotation for docker: https://docs.docker.com/config/daemon/
@@ -149,7 +149,7 @@ function SetupNewNode()
     sudo lsof -i -P -n | grep LISTEN
 
     WriteToConsole "kubernetes versions available in repo"
-    sudo yum -y --showduplicates list kubelet kubeadm kubectl kubernetes-cni
+    sudo yum -y --showduplicates list kubelet kubeadm kubectl kubernetes-cni | sort -r
 
     WriteToConsole "installing kubernetes"
     Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
