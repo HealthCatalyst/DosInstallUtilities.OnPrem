@@ -43,6 +43,12 @@ function GlobalsDummy()
     kubernetesserverversion = "1.11.3-0"
     kubernetesImagesversion = "1.11.3"
     realtimePackageUrl = "https://raw.githubusercontent.com/HealthCatalyst/helm.realtime/master/fabricrealtime-1.1.0.tgz"
+    externalLoadBalancerLabel = "k8s-app-external"
+    externalLoadBalancerLabelValue = "nginx"
+    internalLoadBalancerLabel = "k8s-app-internal"
+    internalLoadBalancerLabelValue = "nginx"
+    internalLoadBalancerLabelSelector = "k8s-app-internal=nginx"
+    externalLoadBalancerLabelSelector = "k8s-app-external=nginx"
 }
 
 Export-ModuleMember -Variable globals
