@@ -49,7 +49,12 @@ function SetupMaster()
     WriteToConsole "setting up new master node"
     SetupNewMasterNode -baseUrl $baseUrl
 
-    if ($singlenode -eq $True) {
+    WriteToConsole "enabling master node to run containers"
+    # enable master to run containers
+    # kubectl taint nodes --all node-role.kubernetes.io/master-
+    kubectl taint node --all node-role.kubernetes.io/master:NoSchedule-
+
+    if ($singlenode) {
         Write-Host "enabling master node to run containers"
         # enable master to run containers
         # kubectl taint nodes --all node-role.kubernetes.io/master-

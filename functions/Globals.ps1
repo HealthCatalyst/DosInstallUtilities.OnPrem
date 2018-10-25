@@ -42,6 +42,7 @@ function GlobalsDummy()
     kubernetescniversion = "0.6.0-0"
     kubernetesserverversion = "1.11.3-0"
     kubernetesImagesversion = "1.11.3"
+    realtimePackageUrl = "https://raw.githubusercontent.com/HealthCatalyst/helm.realtime/master/fabricrealtime-1.1.0.tgz"
 }
 
 Export-ModuleMember -Variable globals

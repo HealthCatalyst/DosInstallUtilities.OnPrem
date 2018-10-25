@@ -18,6 +18,8 @@
 . $PSScriptRoot\functions\Fileshare\mountSMB.ps1
 . $PSScriptRoot\functions\Fileshare\mountSMBWithParams.ps1
 . $PSScriptRoot\functions\Fileshare\ShowContentsOfSharedFolder.ps1
+. $PSScriptRoot\functions\Fileshare\CreateOnPremStorage.ps1
+. $PSScriptRoot\functions\Fileshare\DeleteOnPremStorage.ps1
 
 # firewall
 . $PSScriptRoot\functions\Firewall\ConfigureFirewall.ps1
