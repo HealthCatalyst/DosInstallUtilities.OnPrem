@@ -45,9 +45,9 @@ function SetupNewMasterNode()
 
     # CLUSTER_DNS_CORE_DNS="true"
 
-    $kubernetesserverversion = $globals.kubernetesserverversion
+    $kubernetesImagesversion = $globals.kubernetesImagesversion
 
-    sudo kubeadm config images pull --kubernetes-version=v${kubernetesserverversion} --v 9
+    sudo kubeadm config images pull --kubernetes-version=v${kubernetesImagesversion} --v 9
 
     $globals
     # Write-Host "running kubeadm init for flannel"
@@ -55,7 +55,7 @@ function SetupNewMasterNode()
     # sudo kubeadm init --kubernetes-version=v${kubernetesversion} --pod-network-cidr=10.244.0.0/16 --feature-gates CoreDNS=true
     # https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/
     sudo kubeadm init `
-            --kubernetes-version=v${kubernetesserverversion} `
+            --kubernetes-version=v${kubernetesImagesversion} `
             --pod-network-cidr=10.244.0.0/16 `
             --skip-token-print `
             --v 9 `
