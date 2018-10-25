@@ -27,7 +27,7 @@ function OpenKubernetesDashboard()
     )
 
     Write-Verbose 'OpenKubernetesDashboard: Starting'
-    $dnshostname = $(ReadSecretValue "dnshostname")
+    $dnshostname = $(ReadSecretValue  -secretname "dnshostname" -namespace "default")
     $myip = $(host $(hostname) | awk '/has address/ { print $4 ; exit }')
     WriteToConsole "dns entries for c:\windows\system32\drivers\etc\hosts (if needed)"
     WriteToConsole "${myip} ${dnshostname}"

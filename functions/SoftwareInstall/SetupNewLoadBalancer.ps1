@@ -45,12 +45,12 @@ function SetupNewLoadBalancer()
 
     AskForSecretValue -secretname "customerid" -prompt "Customer ID "
     Write-Host "reading secret from kubernetes"
-    $customerid = $(ReadSecretValue -secretname "customerid")
+    $customerid = $(ReadSecretValue -secretname "customerid" -namespace "default")
 
     $fullhostname = $(hostname --fqdn)
     Write-Host "Full host name of current machine: $fullhostname"
     AskForSecretValue -secretname "dnshostname" -prompt "DNS name used to connect to the master VM (leave empty to use $fullhostname)" -namespace "default" -defaultvalue $fullhostname
-    $dnsrecordname = $(ReadSecretValue -secretname "dnshostname")
+    $dnsrecordname = $(ReadSecretValue -secretname "dnshostname" -namespace "default")
 
     $sslsecret = $(kubectl get secret traefik-cert-ahmn -n kube-system --ignore-not-found=true)
 
@@ -132,6 +132,8 @@ function SetupNewLoadBalancer()
     helm install stable/nginx-ingress `
         --namespace "kube-system" `
         --name "$package" `
+        --set controller.service.type="ClusterIP" `
+        --set controller.hostNetwork="1" `
         --set controller.image.tag="$ngniximageTag"
 
     # setting values in helm: https://github.com/helm/helm/blob/master/docs/chart_best_practices/values.md
@@ -143,6 +145,8 @@ function SetupNewLoadBalancer()
     helm install stable/nginx-ingress `
         --namespace "kube-system" `
         --name "$packageInternal" `
+        --set controller.service.type="ClusterIP" `
+        --set controller.hostNetwork="1" `
         --set controller.image.tag="$ngniximageTag"
 
         Write-Verbose 'SetupNewLoadBalancer: Done'
