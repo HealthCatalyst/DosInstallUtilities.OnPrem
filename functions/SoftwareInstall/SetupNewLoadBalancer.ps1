@@ -105,16 +105,7 @@ function SetupNewLoadBalancer()
     chmod 700 get_helm.sh
     ./get_helm.sh
 
-    helm init --client-only
-
-    # https://zero-to-jupyterhub.readthedocs.io/en/stable/setup-helm.html
-    kubectl --namespace kube-system create serviceaccount tiller
-
-    kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
-
-    helm init --service-account tiller
-
-    helm init --upgrade --service-account tiller
+    InitHelm
 
     [string] $package = "nginx"
     [string] $packageInternal = "nginx-internal"
