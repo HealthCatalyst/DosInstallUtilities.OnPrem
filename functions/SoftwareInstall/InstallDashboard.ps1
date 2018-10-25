@@ -38,6 +38,17 @@ function InstallDashboard()
         --set rbac.create=true `
         --wait --timeout 30
 
+
+    [string] $dashboardUser = $(Get-UserForDashboard)
+    kubectl create serviceaccount $dashboardUser
+    kubectl create clusterrolebinding kubernetes-dashboard-user --clusterrole=cluster-admin --serviceaccount=kube-system:$dashboardUser
+
+    # $serviceAccount = "kubernetes-dashboard-service-account"
+    # kubectl create serviceaccount $serviceAccount
+
+    # Write-Host "Giving permissions to the kubernetes-dashboard service"
+    # kubectl create clusterrolebinding kubernetes-dashboard-service --clusterrole=cluster-admin --serviceaccount=kube-system:$serviceAccount
+
     helm install stable/kubernetes-dashboard `
         --name kubernetes-dashboard `
         --namespace kube-system `
