@@ -1,5 +1,8 @@
 # Modules
 
+# Globals
+. $PSScriptRoot\functions\Globals.ps1
+
 # cluster
 . $PSScriptRoot\functions\Cluster\ShowCommandToJoinCluster.ps1
 . $PSScriptRoot\functions\Cluster\ShowKubernetesServiceStatus.ps1
