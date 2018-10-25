@@ -52,11 +52,11 @@ function ShowCommandToJoinCluster()
         WriteToConsole $fullCommand
 
         # if [[ ! -z "$pathToShare" ]]; then
-        #     WriteToLog "curl -sSL $baseUrl/onprem/mountfolder.sh?p=$RANDOM | bash -s $pathToShare $username $domain $password 2>&1 | tee mountfolder.log"
+        #     Write-Host "curl -sSL $baseUrl/onprem/mountfolder.sh?p=$RANDOM | bash -s $pathToShare $username $domain $password 2>&1 | tee mountfolder.log"
         # fi
-        # WriteToLog "sudo $(sudo kubeadm token create --print-join-command)"
-        WriteToLog ""
-        WriteToLog "-------------------- COPY ABOVE THIS LINE ------------------------------"
+        # Write-Host "sudo $(sudo kubeadm token create --print-join-command)"
+        Write-Host ""
+        Write-Host "-------------------- COPY ABOVE THIS LINE ------------------------------"
     }
 
     Write-Verbose 'ShowCommandToJoinCluster: Done'

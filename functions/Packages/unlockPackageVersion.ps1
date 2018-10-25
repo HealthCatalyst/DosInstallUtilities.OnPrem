@@ -24,11 +24,15 @@ function unlockPackageVersion()
     [CmdletBinding()]
     param
     (
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $packagelist
     )
 
     Write-Verbose 'unlockPackageVersion: Starting'
 
-    $packages = $packagelist.Split(" ");
+    [string[]] $packages = $packagelist.Split(" ");
     foreach ($name in $packages) {
         sudo yum versionlock delete $name 2>&1 >> yum.log
     }

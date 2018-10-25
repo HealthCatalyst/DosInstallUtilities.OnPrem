@@ -37,7 +37,7 @@ function UninstallDockerAndKubernetes()
     WriteToConsole "Uninstalling docker and kubernetes"
 
     if ("$(command -v kubeadm)") {
-        WriteToLog "resetting kubeadm"
+        Write-Host "resetting kubeadm"
         sudo kubeadm reset -f
     }
     sudo yum -y remove kubelet kubeadm kubectl kubernetes-cni

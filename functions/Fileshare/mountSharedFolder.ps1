@@ -51,7 +51,7 @@ function mountSharedFolder()
         mountSMB -saveIntoSecret $saveIntoSecret
     }
     else {
-        WriteToLog "User will mount a shared folder manually"
+        Write-Host "User will mount a shared folder manually"
     }
 
     Write-Verbose 'mountSharedFolder: Done'

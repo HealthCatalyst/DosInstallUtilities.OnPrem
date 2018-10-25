@@ -37,18 +37,18 @@ function SetupNewLoadBalancer()
     WriteToConsole "deleting any old resources"
     # enable running pods on master
     # kubectl taint node mymasternode node-role.kubernetes.io/master:NoSchedule
-    WriteToLog "deleting existing resources with label traefik"
+    Write-Host "deleting existing resources with label traefik"
     kubectl delete 'pods,services,configMaps,deployments,ingress' -l k8s-traefik=traefik -n kube-system --ignore-not-found=true
 
-    WriteToLog "deleting existing service account for traefik"
+    Write-Host "deleting existing service account for traefik"
     kubectl delete ServiceAccount traefik-ingress-controller-serviceaccount -n kube-system --ignore-not-found=true
 
     AskForSecretValue -secretname "customerid" -prompt "Customer ID "
-    WriteToLog "reading secret from kubernetes"
+    Write-Host "reading secret from kubernetes"
     $customerid = $(ReadSecretValue -secretname "customerid")
 
     $fullhostname = $(hostname --fqdn)
-    WriteToLog "Full host name of current machine: $fullhostname"
+    Write-Host "Full host name of current machine: $fullhostname"
     AskForSecretValue -secretname "dnshostname" -prompt "DNS name used to connect to the master VM (leave empty to use $fullhostname)" -namespace "default" -defaultvalue $fullhostname
     $dnsrecordname = $(ReadSecretValue -secretname "dnshostname")
 
@@ -58,20 +58,20 @@ function SetupNewLoadBalancer()
         $certfolder = Read-Host -Prompt "Location of SSL cert files (tls.crt and tls.key): (leave empty to generate self-signed certificates)"
 
         if (!$certfolder) {
-            WriteToLog "Generating self-signed SSL certificate"
+            Write-Host "Generating self-signed SSL certificate"
             sudo yum -y install openssl
             $u = "$(whoami)"
             $certfolder = "/opt/healthcatalyst/certs"
-            WriteToLog "Creating folder: $certfolder and giving access to $u"
+            Write-Host "Creating folder: $certfolder and giving access to $u"
             sudo mkdir -p "$certfolder"
             sudo setfacl -m u:$u:rwx "$certfolder"
             rm -rf "$certfolder/*"
             cd "$certfolder"
             # https://gist.github.com/fntlnz/cf14feb5a46b2eda428e000157447309
-            WriteToLog "Generating CA cert"
+            Write-Host "Generating CA cert"
             sudo openssl genrsa -out rootCA.key 2048
             sudo openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 3650 -subj /CN=HCKubernetes/O=HealthCatalyst/ -out rootCA.crt
-            WriteToLog "Generating certificate for $dnsrecordname"
+            Write-Host "Generating certificate for $dnsrecordname"
             sudo openssl genrsa -out tls.key 2048
             sudo openssl req -new -key tls.key -subj /CN=$dnsrecordname/O=HealthCatalyst/ -out tls.csr
             sudo openssl x509 -req -in tls.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out tls.crt -days 3650 -sha256
@@ -81,10 +81,10 @@ function SetupNewLoadBalancer()
 
         ls -al "$certfolder"
 
-        WriteToLog "Deleting any old TLS certs"
+        Write-Host "Deleting any old TLS certs"
         kubectl delete secret traefik-cert-ahmn -n kube-system --ignore-not-found=true
 
-        WriteToLog "Storing TLS certs as kubernetes secret"
+        Write-Host "Storing TLS certs as kubernetes secret"
         kubectl create secret generic traefik-cert-ahmn -n kube-system --from-file="$certfolder/tls.crt" --from-file="$certfolder/tls.key"
     }
 
@@ -100,7 +100,7 @@ function SetupNewLoadBalancer()
     #                     -internalSubnetName "" -internalIp "$internalIp" `
     #                     -local $False
 
-    WriteToLog "installing helm"
+    Write-Host "installing helm"
     curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
     chmod 700 get_helm.sh
     ./get_helm.sh

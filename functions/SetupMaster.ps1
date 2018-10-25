@@ -50,7 +50,7 @@ function SetupMaster()
     SetupNewMasterNode -baseUrl $baseUrl
 
     if ($singlenode -eq $True) {
-        WriteToLog "enabling master node to run containers"
+        Write-Host "enabling master node to run containers"
         # enable master to run containers
         # kubectl taint nodes --all node-role.kubernetes.io/master-
         kubectl taint node --all node-role.kubernetes.io/master:NoSchedule-
@@ -65,11 +65,11 @@ function SetupMaster()
 #    WriteToConsole "setting up kubernetes dashboard"
 #    InstallStack -baseUrl $baseUrl -namespace "kube-system" -appfolder "dashboard" -local $False
     # clear
-    WriteToLog "waiting for pods to run in kube-system"
+    Write-Host "waiting for pods to run in kube-system"
     WaitForPodsInNamespace -namespace "kube-system" -interval 5
 
     if ($singlenode -eq $True) {
-        WriteToLog "Finished setting up a single-node cluster"
+        Write-Host "Finished setting up a single-node cluster"
     }
     else {
         ShowCommandToJoinCluster $baseUrl

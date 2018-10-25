@@ -34,24 +34,24 @@ function SetupNewNode()
 
     [hashtable]$Return = @{}
 
-    WriteToLog "checking if this machine can access a DNS server via host $(hostname)"
-    WriteToLog "/etc/resolv.conf"
+    Write-Host "checking if this machine can access a DNS server via host $(hostname)"
+    Write-Host "/etc/resolv.conf"
     sudo cat /etc/resolv.conf
-    WriteToLog "----------------------------"
+    Write-Host "----------------------------"
 
     $myip = $(host $(hostname) | awk '/has address/ { print $4 ; exit }')
 
     if (!$myip) {
         throw "Cannot access my DNS server: host $(hostname)"
-        WriteToLog "Cannot access my DNS server: host $(hostname)"
-        WriteToLog "checking if this machine can access a DNS server via host $(hostname)"
+        Write-Host "Cannot access my DNS server: host $(hostname)"
+        Write-Host "checking if this machine can access a DNS server via host $(hostname)"
         $myip = $(hostname -I | cut -d" " -f 1)
         if ($myip) {
-            WriteToLog "Found an IP via hostname -I: $myip"
+            Write-Host "Found an IP via hostname -I: $myip"
         }
     }
     else {
-        WriteToLog "My external IP is $myip"
+        Write-Host "My external IP is $myip"
     }
 
     # $(export dockerversion="17.03.2.ce-1")
@@ -61,10 +61,10 @@ function SetupNewNode()
     # 1.10.0-0
     # $(export kubernetescniversion="0.6.0-0")
 
-    WriteToLog "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
+    Write-Host "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
 
     $u = "$(whoami)"
-    WriteToLog "User name: $u"
+    Write-Host "User name: $u"
 
 
     ConfigureFirewall
@@ -79,7 +79,7 @@ function SetupNewNode()
     # WriteToConsole "stopping docker and kubectl"
     # $servicestatus = $(systemctl show -p SubState kubelet)
     # if [[ $servicestatus = *"running"* ]]; then
-    # WriteToLog "stopping kubelet"
+    # Write-Host "stopping kubelet"
     # sudo systemctl stop kubelet
     # fi
 
@@ -103,7 +103,7 @@ function SetupNewNode()
     # sudo sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/sysconfig/selinux
 
     WriteToConsole "Installing docker via yum "
-    WriteToLog "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
+    Write-Host "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
     # need to pass --setpot=obsoletes=0 due to this bug: https://github.com/docker/for-linux/issues/20#issuecomment-312122325
 
     sudo yum install -y --setopt=obsoletes=0 docker-ce-${$($globals.dockerversion)}.el7.centos docker-ce-selinux-${$($globals.dockerselinuxversion)}.el7.centos
@@ -132,9 +132,9 @@ function SetupNewNode()
         # newgrp docker
     }
 
-    WriteToLog "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
+    Write-Host "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
 
-    WriteToLog "docker status"
+    Write-Host "docker status"
     sudo systemctl status docker -l
 
     WriteToConsole "Adding kubernetes repo"
@@ -147,7 +147,7 @@ function SetupNewNode()
     sudo yum -y --showduplicates list kubelet kubeadm kubectl kubernetes-cni
 
     WriteToConsole "installing kubernetes"
-    WriteToLog "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
+    Write-Host "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
 
     sudo yum -y install kubelet-${$($globals.kubernetesversion)} kubeadm-${$($globals.kubernetesversion)} kubectl-${$($globals.kubernetesversion} kubernetes-cni-${kubernetescniversion)}
 
@@ -158,7 +158,7 @@ function SetupNewNode()
     # sudo yum versionlock add kubectl
     # sudo yum versionlock add kubernetes-cni
 
-    WriteToLog "setting up iptables for kubernetes in k8s.conf"
+    Write-Host "setting up iptables for kubernetes in k8s.conf"
     # # Some users on RHEL/CentOS 7 have reported issues with traffic being routed incorrectly due to iptables being bypassed
     sudo curl -o "/etc/sysctl.d/k8s.conf" -sSL "$baseUrl/onprem/k8s.conf"
     sudo sysctl --system

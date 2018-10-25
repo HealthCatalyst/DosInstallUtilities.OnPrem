@@ -32,7 +32,7 @@ function lockPackageVersion()
 
     Write-Verbose 'lockPackageVersion: Starting'
 
-    $packages = $packagelist.Split(" ");
+    [string[]] $packages = $packagelist.Split(" ");
     foreach ($name in $packages) {
         sudo yum list installed $name
         $result = $LASTEXITCODE

@@ -62,7 +62,7 @@ function MountFolderFromSecrets()
         mountSMBWithParams -pathToShare $pathToShare -username $username -domain $domain -password $password -saveIntoSecret $False -isUNC $True
     }
     else {
-        WriteToLog "No username found in secrets"
+        Write-Host "No username found in secrets"
         mountSMB -saveIntoSecret $False
     }
 

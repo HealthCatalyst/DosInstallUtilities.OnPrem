@@ -51,7 +51,7 @@ function SetupWorker()
     SetupNewNode -baseUrl $baseUrl
 
     WriteToConsole "joining cluster"
-    WriteToLog "sudo $joincommand"
+    Write-Host "sudo $joincommand"
     Invoke-Expression "sudo $joincommand"
 
     # sudo kubeadm join --token $token $masterurl --discovery-token-ca-cert-hash $discoverytoken
