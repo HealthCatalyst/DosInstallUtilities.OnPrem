@@ -2,6 +2,7 @@
 
 # Globals
 . $PSScriptRoot\functions\Globals.ps1
+. $PSScriptRoot\functions\WriteToConsole.ps1
 
 # cluster
 . $PSScriptRoot\functions\Cluster\ShowCommandToJoinCluster.ps1
