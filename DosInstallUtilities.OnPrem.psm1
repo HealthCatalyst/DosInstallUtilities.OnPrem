@@ -22,6 +22,7 @@
 # firewall
 . $PSScriptRoot\functions\Firewall\ConfigureFirewall.ps1
 . $PSScriptRoot\functions\Firewall\OpenPortOnPrem.ps1
+. $PSScriptRoot\functions\Firewall\AddFirewallPort.ps1
 
 # Hyperv
 . $PSScriptRoot\functions\Hyperv\OptimizeCentosForHyperv.ps1
