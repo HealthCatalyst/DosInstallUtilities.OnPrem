@@ -133,21 +133,21 @@ function SetupNewLoadBalancer()
         --namespace "kube-system" `
         --name "$package" `
         --set controller.service.type="ClusterIP" `
-        --set controller.hostNetwork="1" `
+        --set controller.hostNetwork=true `
         --set controller.image.tag="$ngniximageTag"
 
     # setting values in helm: https://github.com/helm/helm/blob/master/docs/chart_best_practices/values.md
     # and https://github.com/helm/helm/blob/master/docs/using_helm.md
     # use "helm inspect values" to see values
 
-    Write-Verbose "Installing the internal nginx load balancer"
-    # NOTE: helm cannot handle spaces before or after "=" in --set command
-    helm install stable/nginx-ingress `
-        --namespace "kube-system" `
-        --name "$packageInternal" `
-        --set controller.service.type="ClusterIP" `
-        --set controller.hostNetwork="1" `
-        --set controller.image.tag="$ngniximageTag"
+    # Write-Verbose "Installing the internal nginx load balancer"
+    # # NOTE: helm cannot handle spaces before or after "=" in --set command
+    # helm install stable/nginx-ingress `
+    #     --namespace "kube-system" `
+    #     --name "$packageInternal" `
+    #     --set controller.service.type="ClusterIP" `
+    #     --set controller.hostNetwork=true `
+    #     --set controller.image.tag="$ngniximageTag"
 
         Write-Verbose 'SetupNewLoadBalancer: Done'
 

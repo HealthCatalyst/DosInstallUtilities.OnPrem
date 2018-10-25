@@ -40,6 +40,10 @@
 . $PSScriptRoot\functions\SoftwareInstall\SetupNewMasterNode.ps1
 . $PSScriptRoot\functions\SoftwareInstall\SetupNewNode.ps1
 . $PSScriptRoot\functions\SoftwareInstall\UninstallDockerAndKubernetes.ps1
+. $PSScriptRoot\functions\SoftwareInstall\InstallDashboard.ps1
+
+# Troubleshooting
+. $PSScriptRoot\functions\Troubleshooting\showTroubleshootingMenu.ps1
 
 # Main files
 . $PSScriptRoot\functions\SetupMaster.ps1

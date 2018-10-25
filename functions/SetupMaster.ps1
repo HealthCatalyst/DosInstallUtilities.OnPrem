@@ -62,8 +62,10 @@ function SetupMaster()
     WriteToConsole "setting up load balancer"
     SetupNewLoadBalancer -baseUrl $baseUrl
 
-#    WriteToConsole "setting up kubernetes dashboard"
-#    InstallStack -baseUrl $baseUrl -namespace "kube-system" -appfolder "dashboard" -local $False
+
+    WriteToConsole "setting up kubernetes dashboard"
+    InstallDashboard
+
     # clear
     Write-Host "waiting for pods to run in kube-system"
     WaitForPodsInNamespace -namespace "kube-system" -interval 5
