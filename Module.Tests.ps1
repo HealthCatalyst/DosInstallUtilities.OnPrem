@@ -2,6 +2,8 @@ $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $functionFolder = "$here\functions"
 $module = "DosInstallUtilities.OnPrem"
 
+Set-StrictMode -Version Latest
+
 Get-Module "$module" | Remove-Module -Force
 
 Import-Module "$here\$module.psm1" -Force

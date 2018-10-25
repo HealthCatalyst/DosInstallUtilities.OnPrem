@@ -61,7 +61,12 @@ function SetupNewNode()
     # 1.10.0-0
     # $(export kubernetescniversion="0.6.0-0")
 
-    Write-Host "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
+    $dockerversion = $globals.dockerversion
+    $dockerselinuxversion = $globals.dockerselinuxversion
+    $kubernetesversion = $globals.kubernetesversion
+    $kubernetescniversion = $globals.kubernetescniversion
+
+    Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
 
     $u = "$(whoami)"
     Write-Host "User name: $u"
@@ -103,10 +108,10 @@ function SetupNewNode()
     # sudo sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/sysconfig/selinux
 
     WriteToConsole "Installing docker via yum "
-    Write-Host "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
+    Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
     # need to pass --setpot=obsoletes=0 due to this bug: https://github.com/docker/for-linux/issues/20#issuecomment-312122325
 
-    sudo yum install -y --setopt=obsoletes=0 docker-ce-${$($globals.dockerversion)}.el7.centos docker-ce-selinux-${$($globals.dockerselinuxversion)}.el7.centos
+    sudo yum install -y --setopt=obsoletes=0 docker-ce-${dockerversion}.el7.centos docker-ce-selinux-${dockerselinuxversion}.el7.centos
 
     # installYumPackages "docker-ce-${dockerversion}.el7.centos docker-ce-selinux-${dockerversion}.el7.centos"
     lockPackageVersion "docker-ce docker-ce-selinux"
@@ -132,7 +137,7 @@ function SetupNewNode()
         # newgrp docker
     }
 
-    Write-Host "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
+    Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
 
     Write-Host "docker status"
     sudo systemctl status docker -l
@@ -147,9 +152,9 @@ function SetupNewNode()
     sudo yum -y --showduplicates list kubelet kubeadm kubectl kubernetes-cni
 
     WriteToConsole "installing kubernetes"
-    Write-Host "using docker version ${$($globals.dockerversion)}, kubernetes version ${$($globals.kubernetesversion)}, cni version ${$($globals.kubernetescniversion)}"
+    Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
 
-    sudo yum -y install kubelet-${$($globals.kubernetesversion)} kubeadm-${$($globals.kubernetesversion)} kubectl-${$($globals.kubernetesversion} kubernetes-cni-${kubernetescniversion)}
+    sudo yum -y install kubelet-${kubernetesversion} kubeadm-${kubernetesversion} kubectl-${kubernetesversion} kubernetes-cni-${kubernetescniversion}
 
     lockPackageVersion "kubelet kubeadm kubectl kubernetes-cni"
     WriteToConsole "locking versions of kubernetes so they don't get updated by yum update"
