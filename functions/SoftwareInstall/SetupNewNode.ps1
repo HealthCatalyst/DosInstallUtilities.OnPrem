@@ -111,7 +111,7 @@ function SetupNewNode()
     Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
     # need to pass --setpot=obsoletes=0 due to this bug: https://github.com/docker/for-linux/issues/20#issuecomment-312122325
 
-    sudo yum install -y --setopt=obsoletes=0 docker-ce-${dockerversion}.el7.centos container-selinux${dockerselinuxversion}.el7
+    sudo yum install -y --setopt=obsoletes=0 docker-ce-${dockerversion}.el7.centos container-selinux-${dockerselinuxversion}.el7
 
     # installYumPackages "docker-ce-${dockerversion}.el7.centos docker-ce-selinux-${dockerversion}.el7.centos"
     lockPackageVersion "docker-ce container-selinux"

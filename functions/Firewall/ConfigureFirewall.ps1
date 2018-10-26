@@ -89,6 +89,10 @@ function ConfigureFirewall()
     # sudo firewall-cmd --get-zone-of-interface=docker0
     # sudo firewall-cmd --permanent --zone=trusted --add-interface=docker0
 
+    AddFirewallPort -port "6661/tcp" -name "DOS Interface engine"
+    AddFirewallPort -port "3307/tcp" -name "DOS MySql"
+    AddFirewallPort -port "5671/tcp" -name "DOS Interface engine"
+
     # https://basildoncoder.com/blog/logging-connections-with-firewalld.html
     # sudo firewall-cmd --zone=public --add-rich-rule="rule family="ipv4" source address="198.51.100.0/32" port protocol="tcp" port="10000" log prefix="test-firewalld-log" level="info" accept"
     # sudo tail -f /var/log/messages |grep test-firewalld-log
