@@ -56,7 +56,7 @@ function InstallDashboard()
         --set-string ingress.annotations."nginx\.ingress\.kubernetes\.io/secure-backends"='"true"' `
         --set-string ingress.annotations."nginx\.ingress\.kubernetes\.io/rewrite-target"='"/"' `
         --set-string ingress.annotations."nginx\.ingress\.kubernetes\.io/add-base-url"='"true"' `
-        --set-string ingress.path='"/dashboard"' `
+        --set-string ingress.path='"/ui"' `
         --wait
 
     Write-Verbose 'InstallDashboard: Done'
