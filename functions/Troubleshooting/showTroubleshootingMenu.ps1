@@ -46,6 +46,7 @@ function showTroubleshootingMenu()
         Write-Host "5: Show kubernetes service status"
         Write-Host "6: Troubleshoot Ingresses"
         Write-Host "7: Show logs of all pods in kube-system"
+        Write-Host "8: Show logs of the load balancer"
         Write-Host "----- Reinstall ------"
         Write-Host "13: Reinstall Load Balancer"
         Write-Host "------ Other tasks ---- "
@@ -85,6 +86,9 @@ function showTroubleshootingMenu()
             }
             '7' {
                 ShowLogsOfAllPodsInNameSpace "kube-system"
+            }
+            '8' {
+                kubectl logs -l "app=nginx-ingress" -n kube-system
             }
             '13' {
                 SetupOnPremLoadBalancer $baseUrl

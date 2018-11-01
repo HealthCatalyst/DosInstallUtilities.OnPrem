@@ -88,19 +88,9 @@ function SetupOnPremLoadBalancer()
         kubectl create secret generic traefik-cert-ahmn -n kube-system --from-file="$certfolder/tls.crt" --from-file="$certfolder/tls.key"
 
         kubectl create secret tls my-ssl-cert -n kube-system --key "$certfolder/tls.key" --cert "$certfolder/tls.crt"
+
+        # kubectl create secret generic kubernetes-dashboard-certs --from-file=$HOME/certs -n kube-system
     }
-
-    $ingressInternalType = "public"
-    $ingressExternalType = "onprem"
-    $externalIp = ""
-    $internalIp = ""
-
-    # LoadLoadBalancerStack -baseUrl $baseUrl -ssl 1 -customerid $customerid `
-    #                     -ingressInternalType $ingressInternalType -ingressExternalType $ingressExternalType `
-    #                     -isOnPrem $true `
-    #                     -externalSubnetName "" -externalIp "$externalIp" `
-    #                     -internalSubnetName "" -internalIp "$internalIp" `
-    #                     -local $False
 
     Write-Host "installing helm"
     curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
@@ -128,7 +118,7 @@ function SetupOnPremLoadBalancer()
         --set controller.service.type="ClusterIP" `
         --set controller.hostNetwork=true `
         --set controller.image.tag="$ngniximageTag" `
-        --set controller.extraArgs.default-ssl-certificate="kube-system/foo-tls" `
+        --set controller.extraArgs.default-ssl-certificate="kube-system/my-ssl-cert" `
         --debug `
         --wait
 
