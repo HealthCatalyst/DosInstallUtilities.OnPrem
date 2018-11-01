@@ -32,8 +32,9 @@ function OpenKubernetesDashboard()
     WriteToConsole "dns entries for c:\windows\system32\drivers\etc\hosts (if needed)"
     WriteToConsole "${myip} ${dnshostname}"
     WriteToConsole "-"
-    WriteToConsole "You can access the kubernetes dashboard at: https://${dnshostname}/dashboard/ or https://${myip}/dashboard/"
-    $secretname = $(kubectl -n kube-system get secret | grep api-dashboard-user | awk '{print $1}')
+    WriteToConsole "You can access the kubernetes dashboard at: https://${dnshostname}/ui/ or https://${myip}/ui/"
+    [string] $dashboardUser = $(Get-UserForDashboard)
+    $secretname = $(kubectl -n kube-system get secret | grep $dashboardUser | awk '{print $1}')
     $token = $(ReadSecretData "$secretname" "token" "kube-system")
     WriteToConsole "Bearer Token"
     WriteToConsole $token

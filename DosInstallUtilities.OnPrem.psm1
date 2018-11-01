@@ -38,7 +38,7 @@
 . $PSScriptRoot\functions\Packages\unlockPackageVersion.ps1
 
 # SoftwareInstall
-. $PSScriptRoot\functions\SoftwareInstall\SetupNewLoadBalancer.ps1
+. $PSScriptRoot\functions\SoftwareInstall\SetupOnPremLoadBalancer.ps1
 . $PSScriptRoot\functions\SoftwareInstall\SetupNewMasterNode.ps1
 . $PSScriptRoot\functions\SoftwareInstall\SetupNewNode.ps1
 . $PSScriptRoot\functions\SoftwareInstall\UninstallDockerAndKubernetes.ps1
@@ -48,5 +48,6 @@
 . $PSScriptRoot\functions\Troubleshooting\showTroubleshootingMenu.ps1
 
 # Main files
+. $PSScriptRoot\functions\ShowOnPremMenu.ps1
 . $PSScriptRoot\functions\SetupMaster.ps1
 . $PSScriptRoot\functions\SetupWorker.ps1

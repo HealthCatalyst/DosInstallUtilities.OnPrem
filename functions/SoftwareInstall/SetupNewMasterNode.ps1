@@ -58,7 +58,7 @@ function SetupNewMasterNode()
             --kubernetes-version=v${kubernetesImagesversion} `
             --pod-network-cidr=10.244.0.0/16 `
             --skip-token-print `
-            --v 9 `
+            --v 1 `
             --apiserver-cert-extra-sans $(hostname --fqdn)
 
     $result = $LastExitCode

@@ -65,6 +65,7 @@ function SetupNewNode()
     $dockerselinuxversion = $globals.dockerselinuxversion
     $kubernetesversion = $globals.kubernetesversion
     $kubernetescniversion = $globals.kubernetescniversion
+    $critoolsversion = $globals.critoolsversion
 
     Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
 
@@ -166,7 +167,7 @@ function SetupNewNode()
     WriteToConsole "installing kubernetes"
     Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
 
-    sudo yum -y install kubelet-${kubernetesversion} kubeadm-${kubernetesversion} kubectl-${kubernetesversion} kubernetes-cni-${kubernetescniversion} cri-tools-${kubernetesversion}
+    sudo yum -y install cri-tools-${critoolsversion} kubelet-${kubernetesversion} kubeadm-${kubernetesversion} kubectl-${kubernetesversion} kubernetes-cni-${kubernetescniversion}
 
     lockPackageVersion "kubelet kubeadm kubectl cri-tools kubernetes-cni"
     WriteToConsole "locking versions of kubernetes so they don't get updated by yum update"

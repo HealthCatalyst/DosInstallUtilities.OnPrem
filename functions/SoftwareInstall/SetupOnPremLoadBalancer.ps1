@@ -1,25 +1,25 @@
 <#
 .SYNOPSIS
-SetupNewLoadBalancer
+SetupOnPremLoadBalancer
 
 .DESCRIPTION
-SetupNewLoadBalancer
+SetupOnPremLoadBalancer
 
 .INPUTS
-SetupNewLoadBalancer - The name of SetupNewLoadBalancer
+SetupOnPremLoadBalancer - The name of SetupOnPremLoadBalancer
 
 .OUTPUTS
 None
 
 .EXAMPLE
-SetupNewLoadBalancer
+SetupOnPremLoadBalancer
 
 .EXAMPLE
-SetupNewLoadBalancer
+SetupOnPremLoadBalancer
 
 
 #>
-function SetupNewLoadBalancer()
+function SetupOnPremLoadBalancer()
 {
     [CmdletBinding()]
     param
@@ -30,7 +30,7 @@ function SetupNewLoadBalancer()
         $baseUrl
     )
 
-    Write-Verbose 'SetupNewLoadBalancer: Starting'
+    Write-Verbose 'SetupOnPremLoadBalancer: Starting'
 
     [hashtable]$Return = @{}
 
@@ -86,6 +86,8 @@ function SetupNewLoadBalancer()
 
         Write-Host "Storing TLS certs as kubernetes secret"
         kubectl create secret generic traefik-cert-ahmn -n kube-system --from-file="$certfolder/tls.crt" --from-file="$certfolder/tls.key"
+
+        kubectl create secret tls my-ssl-cert -n kube-system --key "$certfolder/tls.key" --cert "$certfolder/tls.crt"
     }
 
     $ingressInternalType = "public"
@@ -125,7 +127,10 @@ function SetupNewLoadBalancer()
         --name "$package" `
         --set controller.service.type="ClusterIP" `
         --set controller.hostNetwork=true `
-        --set controller.image.tag="$ngniximageTag"
+        --set controller.image.tag="$ngniximageTag" `
+        --set controller.extraArgs.default-ssl-certificate="kube-system/foo-tls" `
+        --debug `
+        --wait
 
     # setting values in helm: https://github.com/helm/helm/blob/master/docs/chart_best_practices/values.md
     # and https://github.com/helm/helm/blob/master/docs/using_helm.md
@@ -140,9 +145,9 @@ function SetupNewLoadBalancer()
     #     --set controller.hostNetwork=true `
     #     --set controller.image.tag="$ngniximageTag"
 
-        Write-Verbose 'SetupNewLoadBalancer: Done'
+        Write-Verbose 'SetupOnPremLoadBalancer: Done'
 
         return $Return
 }
 
-Export-ModuleMember -Function 'SetupNewLoadBalancer'
+Export-ModuleMember -Function 'SetupOnPremLoadBalancer'

@@ -87,7 +87,7 @@ function showTroubleshootingMenu()
                 ShowLogsOfAllPodsInNameSpace "kube-system"
             }
             '13' {
-                SetupNewLoadBalancer $baseUrl
+                SetupOnPremLoadBalancer $baseUrl
             }
             '31' {
                 SetupMaster -baseUrl $baseUrl -singlenode $true
