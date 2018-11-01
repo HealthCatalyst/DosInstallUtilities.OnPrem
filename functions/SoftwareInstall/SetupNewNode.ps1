@@ -71,6 +71,18 @@ function SetupNewNode()
     $u = "$(whoami)"
     Write-Host "User name: $u"
 
+    Write-Host "Adding extras repository"
+    sudo yum install -y yum-utils
+    sudo yum-config-manager --enable rhel-7-server-extras-rpms
+    sudo yum makecache fast
+    # sudo yum-config-manager --enable extras
+
+    Write-Host "Adding EPEL repository"
+    sudo rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    sudo yum makecache fast
+
+    Write-Host "Updating yum packages"
+    sudo yum -y update
 
     ConfigureFirewall
     # ConfigureIpTables
