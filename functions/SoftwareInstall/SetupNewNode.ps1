@@ -125,6 +125,10 @@ function SetupNewNode()
     # need to pass --setpot=obsoletes=0 due to this bug: https://github.com/docker/for-linux/issues/20#issuecomment-312122325
 
     sudo yum install -y --setopt=obsoletes=0 docker-ce-${dockerversion}.el7.centos container-selinux-${dockerselinuxversion}.el7
+    $result = $LastExitCode
+    if($result -ne 0){
+        throw "Error yum install docker: $result"
+    }
 
     # installYumPackages "docker-ce-${dockerversion}.el7.centos docker-ce-selinux-${dockerversion}.el7.centos"
     lockPackageVersion "docker-ce container-selinux"
@@ -139,6 +143,11 @@ function SetupNewNode()
     WriteToConsole "Starting docker service "
     sudo systemctl enable docker
     sudo systemctl start docker
+
+    $result = $LastExitCode
+    if($result -ne 0){
+        throw "systemctl start docker: $result"
+    }
 
     if ($u -ne "root") {
         WriteToConsole "Giving permission to $u to interact with docker"
@@ -168,6 +177,10 @@ function SetupNewNode()
     Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
 
     sudo yum -y install cri-tools-${critoolsversion} kubelet-${kubernetesversion} kubeadm-${kubernetesversion} kubectl-${kubernetesversion} kubernetes-cni-${kubernetescniversion}
+    $result = $LastExitCode
+    if($result -ne 0){
+        throw "yum install kubernetes: $result"
+    }
 
     lockPackageVersion "kubelet kubeadm kubectl cri-tools kubernetes-cni"
     WriteToConsole "locking versions of kubernetes so they don't get updated by yum update"
@@ -184,7 +197,10 @@ function SetupNewNode()
     WriteToConsole "starting kubernetes service"
     sudo systemctl enable kubelet
     sudo systemctl start kubelet
-
+    $result = $LastExitCode
+    if($result -ne 0){
+        throw "systemctl start kubelet: $result"
+    }
     WriteToConsole "finished setting up node"
 
     Write-Verbose 'SetupNewNode: Done'

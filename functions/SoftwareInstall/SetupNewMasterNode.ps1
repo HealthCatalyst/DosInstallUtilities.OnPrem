@@ -48,6 +48,10 @@ function SetupNewMasterNode()
     $kubernetesImagesversion = $globals.kubernetesImagesversion
 
     sudo kubeadm config images pull --kubernetes-version=v${kubernetesImagesversion} --v 9
+    $result = $LastExitCode
+    if($result -ne 0){
+        throw "kubeadm config: $result"
+    }
 
     $globals
     # Write-Host "running kubeadm init for flannel"
@@ -100,6 +104,10 @@ function SetupNewMasterNode()
 
     Write-Host "kubelet status"
     sudo systemctl status kubelet -l
+    $result = $LastExitCode
+    if($result -ne 0){
+        throw "systemctl status kubelet: $result"
+    }
 
     # enable master to run containers
     # kubectl taint nodes --all node-role.kubernetes.io/master-
@@ -107,7 +115,10 @@ function SetupNewMasterNode()
     # kubectl create -f "${baseUrl}/azure/cafe-kube-dns.yml"
     Write-Host "nodes"
     kubectl get nodes
-
+    $result = $LastExitCode
+    if($result -ne 0){
+        throw "kubectl get nodes: $result"
+    }
     Write-Host "sleep for 10 secs"
     Start-Sleep 10
 
