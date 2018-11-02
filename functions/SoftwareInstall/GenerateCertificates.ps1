@@ -73,6 +73,10 @@ function GenerateCertificates() {
                 --name fabric.docker.certificategenerator `
                 -t healthcatalyst/fabric.docker.certificategenerator
 
+            # use the cert with the chain
+            cp $certfolder/server/tls.crt $certfolder/server/tls-single.crt
+            cp $certfolder/server/tlschain.crt $certfolder/server/tls.crt
+
             echo "------- $certfolder/testca ------"
             ls -al "$certfolder/testca"
             echo "---------------------------"
