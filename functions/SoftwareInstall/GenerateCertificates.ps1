@@ -49,7 +49,6 @@ function GenerateCertificates() {
         $certfolder = Read-Host -Prompt "Location of SSL cert files (tls.crt and tls.key): (leave empty to generate self-signed certificates)"
 
         if (!$certfolder) {
-            # $CertPassword="MyCertPassword" #TODO: Generate this
             $ClientCertUser = "fabricrabbitmquser"
             $certfolder = "/opt/healthcatalyst/certs"
 

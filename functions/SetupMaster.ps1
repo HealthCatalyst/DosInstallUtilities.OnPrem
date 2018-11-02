@@ -64,6 +64,9 @@ function SetupMaster()
         mountSharedFolder -saveIntoSecret $True
     }
 
+    WriteToConsole "Installing Helm"
+    InstallHelmOnPrem
+
     WriteToConsole "setting up load balancer"
     SetupOnPremLoadBalancer
 

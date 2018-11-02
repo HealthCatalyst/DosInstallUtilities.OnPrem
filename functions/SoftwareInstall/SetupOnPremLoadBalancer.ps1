@@ -58,13 +58,6 @@ function SetupOnPremLoadBalancer() {
     [string] $certPassword = $(GenerateSecretPassword -secretname "$secret" -namespace "$namespace").Password
     GenerateCertificates -CertHostName "$dnsrecordname" -CertPassword $certPassword
 
-    Write-Host "installing helm"
-    curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
-    chmod 700 get_helm.sh
-    ./get_helm.sh
-
-    InitHelm
-
     [string] $package = "nginx"
     [string] $packageInternal = "nginx-internal"
     [string] $ngniximageTag = $globals.ngniximageTag
