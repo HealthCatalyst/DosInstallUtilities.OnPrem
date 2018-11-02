@@ -47,8 +47,10 @@ function showTroubleshootingMenu()
         Write-Host "6: Troubleshoot Ingresses"
         Write-Host "7: Show logs of all pods in kube-system"
         Write-Host "8: Show logs of the load balancer"
+        Write-Host "9: Show logs of the dashboard"
         Write-Host "----- Reinstall ------"
         Write-Host "13: Reinstall Load Balancer"
+        Write-Host "14: Reinstall Dashboard"
         Write-Host "------ Other tasks ---- "
         Write-Host "31: Create a Single Node Cluster"
         Write-Host "32: Mount folder"
@@ -90,8 +92,14 @@ function showTroubleshootingMenu()
             '8' {
                 kubectl logs -l "app=nginx-ingress" -n kube-system
             }
+            '9' {
+                kubectl logs -l "app=kubernetes-dashboard" -n kube-system
+            }
             '13' {
-                SetupOnPremLoadBalancer $baseUrl
+                SetupOnPremLoadBalancer
+            }
+            '14' {
+                InstallDashboard
             }
             '31' {
                 SetupMaster -baseUrl $baseUrl -singlenode $true

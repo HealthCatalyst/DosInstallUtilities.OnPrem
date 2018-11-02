@@ -65,8 +65,7 @@ function SetupMaster()
     }
 
     WriteToConsole "setting up load balancer"
-    SetupOnPremLoadBalancer -baseUrl $baseUrl
-
+    SetupOnPremLoadBalancer
 
     WriteToConsole "setting up kubernetes dashboard"
     InstallDashboard

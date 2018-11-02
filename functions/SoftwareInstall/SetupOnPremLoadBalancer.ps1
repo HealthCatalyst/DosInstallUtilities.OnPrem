@@ -23,10 +23,6 @@ function SetupOnPremLoadBalancer() {
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory = $true)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $baseUrl
     )
 
     Write-Verbose 'SetupOnPremLoadBalancer: Starting'
