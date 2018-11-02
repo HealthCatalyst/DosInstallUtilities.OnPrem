@@ -65,8 +65,8 @@ function GenerateCertificates() {
             echo "---------------------------"
 
             Write-Host "Running docker container, fabric.docker.certificategenerator, to generate certificates"
-            docker pull healthcatalyst/fabric.docker.certificategenerator
-            docker run --rm -v ${certfolder}:/opt/certs/ `
+            sudo docker pull healthcatalyst/fabric.docker.certificategenerator
+            sudo docker run --rm -v ${certfolder}:/opt/certs/ `
                 -e CERT_HOSTNAME="$CertHostName" `
                 -e CERT_PASSWORD="$CertPassword" `
                 -e CLIENT_CERT_USER="$ClientCertUser" `
