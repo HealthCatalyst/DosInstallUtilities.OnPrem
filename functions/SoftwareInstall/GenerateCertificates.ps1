@@ -56,7 +56,7 @@ function GenerateCertificates() {
             $u = "$(whoami)"
             Write-Host "Creating folder: $certfolder and giving access to $u"
             sudo mkdir -p "$certfolder"
-            sudo setfacl -m u:$u:rwx "$certfolder"
+            sudo setfacl -m u:${u}:rwx "$certfolder"
             cd "$certfolder"
             Write-Host "Cleaning out the folder"
             sudo rm -rf *
