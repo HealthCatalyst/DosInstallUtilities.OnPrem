@@ -58,6 +58,7 @@ function SetupOnPremLoadBalancer() {
     $dnsrecordname = $(ReadSecretValue -secretname "dnshostname" -namespace "default")
 
     [string] $secret = "certpassword"
+    [string] $namespace = "default"
     [string] $certPassword = $(GenerateSecretPassword -secretname "$secret" -namespace "$namespace").Password
     GenerateCertificates -CertHostName "$dnsrecordname" -CertPassword $certPassword
 

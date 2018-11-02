@@ -19,17 +19,17 @@ GenerateCertificates
 
 
 #>
-function GenerateCertificates()
-{
+function GenerateCertificates() {
     [CmdletBinding()]
+    [OutputType([string])]
     param
     (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]
         $CertHostName
         ,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]
         $CertPassword
@@ -40,6 +40,8 @@ function GenerateCertificates()
     Set-StrictMode -Version latest
     # stop whenever there is an error
     $ErrorActionPreference = "Stop"
+
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingCmdletAliases", "", Justification = "We're calling linux commands")]
 
     $sslsecret = $(kubectl get secret fabric-ssl-cert -n kube-system --ignore-not-found=true)
 
@@ -93,14 +95,17 @@ function GenerateCertificates()
             sudo cp client/client.p12 fabricrabbitmquser_client_cert.p12
             kubectl delete secret fabric-ssl-download-cert -n kube-system --ignore-not-found=true
             kubectl create secret generic fabric-ssl-download-cert -n kube-system `
-                        --from-file="fabric_ca_cert.p12" `
-                        --from-file="fabricrabbitmquser_client_cert.p12"
+                --from-file="fabric_ca_cert.p12" `
+                --from-file="fabricrabbitmquser_client_cert.p12"
 
             # remove *.csr, *.key, *.crt, *.srl
 
             cd "~"
 
-            $certfolder="$certfolder/server"
+            $certfolder = "$certfolder/server"
+        }
+        else {
+            Write-Host "TLS files specified so using then"
         }
 
         echo "------ $certfolder ------"
@@ -126,6 +131,9 @@ function GenerateCertificates()
         kubectl get secret $secretName --namespace=kube-system --export -o yaml | kubectl apply --namespace=fabricrealtime -f -
         [string] $secretName = "fabric-ssl-download-cert"
         kubectl get secret $secretName --namespace=kube-system --export -o yaml | kubectl apply --namespace=fabricrealtime -f -
+    }
+    else {
+        Write-Host "Secret fabric-ssl-cert already set so using it"
     }
 
     Write-Verbose 'GenerateCertificates: Done'
