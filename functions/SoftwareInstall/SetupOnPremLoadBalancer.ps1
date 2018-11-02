@@ -19,18 +19,23 @@ SetupOnPremLoadBalancer
 
 
 #>
-function SetupOnPremLoadBalancer()
-{
+function SetupOnPremLoadBalancer() {
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]
         $baseUrl
     )
 
     Write-Verbose 'SetupOnPremLoadBalancer: Starting'
+
+    Set-StrictMode -Version latest
+    # stop whenever there is an error
+    $ErrorActionPreference = "Stop"
+
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingCmdletAliases", "", Justification="We're calling linux commands")]
 
     [hashtable]$Return = @{}
 
@@ -52,45 +57,9 @@ function SetupOnPremLoadBalancer()
     AskForSecretValue -secretname "dnshostname" -prompt "DNS name used to connect to the master VM (leave empty to use $fullhostname)" -namespace "default" -defaultvalue $fullhostname
     $dnsrecordname = $(ReadSecretValue -secretname "dnshostname" -namespace "default")
 
-    $sslsecret = $(kubectl get secret traefik-cert-ahmn -n kube-system --ignore-not-found=true)
-
-    if (!$sslsecret) {
-        $certfolder = Read-Host -Prompt "Location of SSL cert files (tls.crt and tls.key): (leave empty to generate self-signed certificates)"
-
-        if (!$certfolder) {
-            Write-Host "Generating self-signed SSL certificate"
-            sudo yum -y install openssl
-            $u = "$(whoami)"
-            $certfolder = "/opt/healthcatalyst/certs"
-            Write-Host "Creating folder: $certfolder and giving access to $u"
-            sudo mkdir -p "$certfolder"
-            sudo setfacl -m u:$u:rwx "$certfolder"
-            rm -rf "$certfolder/*"
-            cd "$certfolder"
-            # https://gist.github.com/fntlnz/cf14feb5a46b2eda428e000157447309
-            Write-Host "Generating CA cert"
-            sudo openssl genrsa -out rootCA.key 2048
-            sudo openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 3650 -subj /CN=HCKubernetes/O=HealthCatalyst/ -out rootCA.crt
-            Write-Host "Generating certificate for $dnsrecordname"
-            sudo openssl genrsa -out tls.key 2048
-            sudo openssl req -new -key tls.key -subj /CN=$dnsrecordname/O=HealthCatalyst/ -out tls.csr
-            sudo openssl x509 -req -in tls.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out tls.crt -days 3650 -sha256
-            sudo cp tls.crt tls.pem
-            cd "~"
-        }
-
-        ls -al "$certfolder"
-
-        Write-Host "Deleting any old TLS certs"
-        kubectl delete secret traefik-cert-ahmn -n kube-system --ignore-not-found=true
-
-        Write-Host "Storing TLS certs as kubernetes secret"
-        kubectl create secret generic traefik-cert-ahmn -n kube-system --from-file="$certfolder/tls.crt" --from-file="$certfolder/tls.key"
-
-        kubectl create secret tls my-ssl-cert -n kube-system --key "$certfolder/tls.key" --cert "$certfolder/tls.crt"
-
-        # kubectl create secret generic kubernetes-dashboard-certs --from-file=$HOME/certs -n kube-system
-    }
+    [string] $secret = "certpassword"
+    [string] $certPassword = $(GenerateSecretPassword -secretname "$secret" -namespace "$namespace").Password
+    GenerateCertificates -CertHostName "$dnsrecordname" -CertPassword $certPassword
 
     Write-Host "installing helm"
     curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
@@ -101,7 +70,7 @@ function SetupOnPremLoadBalancer()
 
     [string] $package = "nginx"
     [string] $packageInternal = "nginx-internal"
-    [string] $ngniximageTag = "0.20.0"
+    [string] $ngniximageTag = $globals.ngniximageTag
 
     Write-Output "Removing old deployment"
     helm del --purge $package
@@ -118,7 +87,8 @@ function SetupOnPremLoadBalancer()
         --set controller.service.type="ClusterIP" `
         --set controller.hostNetwork=true `
         --set controller.image.tag="$ngniximageTag" `
-        --set controller.extraArgs.default-ssl-certificate="kube-system/my-ssl-cert" `
+        --set controller.extraArgs.default-ssl-certificate="kube-system/fabric-ssl-cert" `
+        --set controller.extraArgs.v=3 `
         --debug `
         --wait
 
@@ -135,9 +105,9 @@ function SetupOnPremLoadBalancer()
     #     --set controller.hostNetwork=true `
     #     --set controller.image.tag="$ngniximageTag"
 
-        Write-Verbose 'SetupOnPremLoadBalancer: Done'
+    Write-Verbose 'SetupOnPremLoadBalancer: Done'
 
-        return $Return
+    return $Return
 }
 
 Export-ModuleMember -Function 'SetupOnPremLoadBalancer'

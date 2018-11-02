@@ -50,6 +50,7 @@ function GlobalsDummy()
     internalLoadBalancerLabelValue = "nginx"
     internalLoadBalancerLabelSelector = "k8s-app-internal=nginx"
     externalLoadBalancerLabelSelector = "k8s-app-external=nginx"
+    ngniximageTag = "0.20.0"
 }
 
 Export-ModuleMember -Variable globals
