@@ -55,7 +55,8 @@ function SetupOnPremLoadBalancer() {
 
     [string] $secret = "certpassword"
     [string] $namespace = "default"
-    [string] $certPassword = $(GenerateSecretPassword -secretname "$secret" -namespace "$namespace").Password
+    GenerateSecretPassword -secretname "$secret" -namespace "$namespace"
+    [string] $certPassword = $(ReadSecretPassword -secretname "$secret" -namespace "$namespace")
     GenerateCertificates -CertHostName "$dnsrecordname" -CertPassword $certPassword
 
     [string] $package = "nginx"
