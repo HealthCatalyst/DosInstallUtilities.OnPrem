@@ -29,7 +29,7 @@ function SetupOnPremLoadBalancer() {
 
     Set-StrictMode -Version latest
     # stop whenever there is an error
-    $ErrorActionPreference = "Stop"
+    # $ErrorActionPreference = "Stop"
 
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingCmdletAliases", "", Justification="We're calling linux commands")]
 
@@ -44,9 +44,10 @@ function SetupOnPremLoadBalancer() {
     Write-Host "deleting existing service account for traefik"
     kubectl delete ServiceAccount traefik-ingress-controller-serviceaccount -n kube-system --ignore-not-found=true
 
-    AskForSecretValue -secretname "customerid" -prompt "Customer ID "
-    Write-Host "reading secret from kubernetes"
-    $customerid = $(ReadSecretValue -secretname "customerid" -namespace "default")
+    # AskForSecretValue -secretname "customerid" -prompt "Customer ID "
+    # Write-Host "reading secret from kubernetes"
+    $customerid = "hcut"
+    SaveSecretValue -secretname "customerid" -valueName "value" -value "$customerid" -namespace "default"
 
     $fullhostname = $(hostname --fqdn)
     Write-Host "Full host name of current machine: $fullhostname"
