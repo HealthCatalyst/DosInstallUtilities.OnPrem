@@ -119,7 +119,7 @@ function GenerateCertificates() {
 
         # kubectl create secret generic kubernetes-dashboard-certs --from-file=$HOME/certs -n kube-system
 
-        CreateNamespaceIfNotExists -namespace "kube-system"
+        CreateNamespaceIfNotExists -namespace "fabricrealtime"
 
         # copy secrets to fabricrealtime namespace
         [string] $secretName = "fabric-ca-cert"
