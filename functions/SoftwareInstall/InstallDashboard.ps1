@@ -63,15 +63,17 @@ function InstallDashboard()
         --set ingress.enabled=true `
         --set-string ingress.path='"/ui"' `
         --set extraArgs="{--api-log-level\=DEBUG}" `
-        --set-string ingress.annotations."kubernetes\.io/ingress\.class"='"nginx"' `
         --set-string ingress.annotations."nginx\.ingress\.kubernetes\.io/secure-backends"='"true"' `
+        --set-string ingress.annotations."kubernetes\.io/ingress\.class"='"nginx"' `
         --set-string ingress.annotations."nginx\.ingress\.kubernetes\.io/rewrite-target"='"/"' `
         --set-string ingress.annotations."nginx\.ingress\.kubernetes\.io/add-base-url"='"true"' `
-        --set ingress.hosts="{$dnshostname}" `
-        --set ingress.tls[0].hosts="{$dnshostname}" `
-        --set ingress.tls[0].secretName=fabric-ssl-cert `
         --debug `
         --wait
+
+#        --set ingress.tls[0].hosts="{$dnshostname}" `
+#        --set ingress.tls[0].secretName=fabric-ssl-cert `
+#       --set ingress.hosts="{$dnshostname}" `
+#       --set ingress.http.paths[0].path="/ui" `
 
     Write-Verbose 'InstallDashboard: Done'
 

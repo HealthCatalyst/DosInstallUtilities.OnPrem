@@ -80,9 +80,10 @@ function SetupOnPremLoadBalancer() {
         --set controller.hostNetwork=true `
         --set controller.image.tag="$ngniximageTag" `
         --set controller.extraArgs.default-ssl-certificate="kube-system/fabric-ssl-cert" `
-        --set controller.extraArgs.v=3 `
         --debug `
         --wait
+
+#        --set controller.extraArgs.v=3 `
 
     # setting values in helm: https://github.com/helm/helm/blob/master/docs/chart_best_practices/values.md
     # and https://github.com/helm/helm/blob/master/docs/using_helm.md

@@ -108,7 +108,7 @@ function mountSMBWithParams()
         Write-Host "Saving mount information into a secret"
         $secretname = "mountsharedfolder"
         $namespace = "default"
-        if ([string]::IsNullOrEmpty("$(kubectl get secret $secretname -n $namespace -o jsonpath='{.data}' --ignore-not-found=true)")) {
+        if (![string]::IsNullOrEmpty("$(kubectl get secret $secretname -n $namespace -o jsonpath='{.data}' --ignore-not-found=true)")) {
             kubectl delete secret $secretname --namespace=$namespace
         }
         kubectl create secret generic $secretname --namespace=$namespace --from-literal=path=$pathToShare --from-literal=username=$username --from-literal=domain=$domain --from-literal=password=$password
