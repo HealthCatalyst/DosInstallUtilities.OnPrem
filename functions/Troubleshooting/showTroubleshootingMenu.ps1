@@ -49,6 +49,7 @@ function showTroubleshootingMenu()
         Write-Host "8: Show logs of the load balancer"
         Write-Host "9: Show logs of the dashboard"
         Write-Host "----- Reinstall ------"
+        Write-Host "12: Change SSL certificate"
         Write-Host "13: Reinstall Load Balancer"
         Write-Host "14: Reinstall Dashboard"
         Write-Host "------ Other tasks ---- "
@@ -94,6 +95,9 @@ function showTroubleshootingMenu()
             }
             '9' {
                 kubectl logs -l "app=kubernetes-dashboard" -n kube-system
+            }
+            '12' {
+                ChangeSslCertificate
             }
             '13' {
                 SetupOnPremLoadBalancer
