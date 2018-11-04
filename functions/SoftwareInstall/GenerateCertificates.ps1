@@ -114,7 +114,8 @@ function GenerateCertificates() {
         cd "~"
 
         Write-Verbose "Removing temporary ssl files since they have been added to kubernetes secrets"
-        Remove-Item -Recurse -Force $certfolder
+        # use external command so we can use sudo
+        sudo rm -rf ${certfolder}/*
 
         if ($sslCertfolder) {
             Write-Host "TLS files specified so using then"
