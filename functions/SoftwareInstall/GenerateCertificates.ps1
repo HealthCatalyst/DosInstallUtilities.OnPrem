@@ -111,10 +111,10 @@ function GenerateCertificates() {
             --from-file="fabric_ca_cert.p12" `
             --from-file="fabricrabbitmquser_client_cert.p12"
 
+        cd "~"
+
         Write-Verbose "Removing temporary ssl files since they have been added to kubernetes secrets"
         Remove-Item -Recurse -Force $certfolder
-
-        cd "~"
 
         if ($sslCertfolder) {
             Write-Host "TLS files specified so using then"
