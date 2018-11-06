@@ -65,8 +65,8 @@ function SetupOnPremLoadBalancer() {
     [string] $ngniximageTag = $globals.ngniximageTag
 
     Write-Output "Removing old deployment"
-    helm del --purge $package
-    helm del --purge $packageInternal
+    DeleteHelmPackage -package $package
+    DeleteHelmPackage -package $packageInternal
 
     Start-Sleep -Seconds 5
 

@@ -28,8 +28,8 @@ function InstallDashboard()
 
     Write-Verbose 'InstallDashboard: Starting'
 
-    helm del --purge kubernetes-dashboard;
-    helm del --purge heapster-release;
+    DeleteHelmPackage -package kubernetes-dashboard;
+    DeleteHelmPackage -package heapster-release;
     Start-Sleep -Seconds 5
 
     helm install stable/heapster `
