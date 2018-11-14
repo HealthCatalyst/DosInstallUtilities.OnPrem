@@ -43,7 +43,7 @@ function GenerateCertificates() {
 
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingCmdletAliases", "", Justification = "We're calling linux commands")]
 
-    $sslsecret = $(kubectl get secret fabric-ssl-cert -n kube-system --ignore-not-found=true)
+    [string] $sslsecret = $(kubectl get secret fabric-ssl-cert -n kube-system --ignore-not-found=true)
 
     if (!$sslsecret) {
         [string] $sslCertfolder = Read-Host -Prompt "Location of SSL cert files (tls.crt and tls.key): (leave empty to generate self-signed certificates)"
