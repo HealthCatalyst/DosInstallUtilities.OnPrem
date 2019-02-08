@@ -51,6 +51,7 @@ function UninstallDockerAndKubernetes()
     sudo yum -y remove docker-engine.x86_64 docker-ce docker-engine-selinux.noarch docker-cimprov.x86_64 docker-engine
     sudo yum -y remove docker docker-common docker-selinux docker-engine docker-ce docker-ce-selinux container-selinux
     sudo yum -y remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
+    sudo yum -y remove docker-ce-cli containerd.io
     unlockPackageVersion "docker-ce docker-ce-selinux"
 
     WriteToConsole "Successfully uninstalled docker and kubernetes"
