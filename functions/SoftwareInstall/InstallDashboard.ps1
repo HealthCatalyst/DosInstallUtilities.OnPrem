@@ -34,11 +34,11 @@ function InstallDashboard()
 
     helm install stable/heapster `
         --name heapster-release `
+        --version 0.3.2 `
         --namespace kube-system `
         --set rbac.create=true `
         --debug `
         --wait --timeout 30
-
 
     [string] $dashboardUser = $(Get-UserForDashboard)
     kubectl create serviceaccount $dashboardUser -n kube-system
@@ -58,10 +58,11 @@ function InstallDashboard()
 
     helm install stable/kubernetes-dashboard `
         --name kubernetes-dashboard `
+        --version 1.2.0 `
         --namespace kube-system `
         --set rbac.create=true `
         --set ingress.enabled=true `
-        --set-string ingress.path='"/ui"' `
+        --set ingress.paths="{/ui}" `
         --set extraArgs="{--api-log-level\=DEBUG}" `
         --set-string ingress.annotations."nginx\.ingress\.kubernetes\.io/secure-backends"='"true"' `
         --set-string ingress.annotations."kubernetes\.io/ingress\.class"='"nginx"' `
