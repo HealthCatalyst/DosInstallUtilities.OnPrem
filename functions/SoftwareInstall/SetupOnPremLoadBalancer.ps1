@@ -75,6 +75,7 @@ function SetupOnPremLoadBalancer() {
     Write-Verbose "Installing the public nginx load balancer"
     helm install stable/nginx-ingress `
         --namespace "kube-system" `
+        --version 1.3.0 `
         --name "$package" `
         --set controller.service.type="ClusterIP" `
         --set controller.hostNetwork=true `
