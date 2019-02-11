@@ -92,7 +92,8 @@ function SetupNewMasterNode()
     # flannel
     # kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml
     Write-Host "enabling flannel network plugin"
-    kubectl apply -f ${baseUrl}/kubernetes/cni/flannel.yaml
+    # kubectl apply -f ${baseUrl}/kubernetes/cni/flannel.yaml
+    kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
     Write-Host "sleeping 10 secs to wait for pods"
     Start-Sleep 10
