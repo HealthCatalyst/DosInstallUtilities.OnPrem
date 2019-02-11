@@ -41,6 +41,7 @@ function lockPackageVersion()
         }
     }
 
+    WriteToConsole "yum versionlock status"
     sudo yum versionlock status
 
     Write-Verbose 'lockPackageVersion: Done'

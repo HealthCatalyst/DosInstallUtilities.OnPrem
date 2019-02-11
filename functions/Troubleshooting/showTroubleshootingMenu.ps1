@@ -92,6 +92,7 @@ function showTroubleshootingMenu()
             }
             '8' {
                 kubectl logs -l "app=nginx-ingress" -n kube-system
+                # kubectl exec -it -n kube-system -l "app=nginx-ingress" cat /etc/nginx/nginx.conf
             }
             '9' {
                 kubectl logs -l "app=kubernetes-dashboard" -n kube-system

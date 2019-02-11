@@ -61,6 +61,7 @@ function InstallDashboard()
         --version 1.2.0 `
         --namespace kube-system `
         --set rbac.create=true `
+        --set ingress.paths="{/}" `
         --set ingress.enabled=true `
         --set extraArgs="{--api-log-level\=DEBUG}" `
         --set-string ingress.annotations."nginx\.ingress\.kubernetes\.io/secure-backends"='"true"' `
