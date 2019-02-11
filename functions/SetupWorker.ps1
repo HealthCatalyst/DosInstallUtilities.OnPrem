@@ -50,18 +50,16 @@ function SetupWorker()
     WriteToConsole "setting up new node"
     SetupNewNode -baseUrl $baseUrl
 
+    WriteToConsole "mounting network folder"
+    MountFolderFromSecrets -baseUrl $baseUrl
+
     WriteToConsole "joining cluster"
     Write-Host "sudo $joincommand"
     Invoke-Expression "sudo $joincommand"
 
     # sudo kubeadm join --token $token $masterurl --discovery-token-ca-cert-hash $discoverytoken
 
-    WriteToConsole "mounting network folder"
-    MountFolderFromSecrets -baseUrl $baseUrl
-
     WriteToConsole "This node has successfully joined the cluster"
-
-    kubectl get nodes
 
     Stop-Transcript
 

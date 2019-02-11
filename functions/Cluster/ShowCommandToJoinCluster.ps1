@@ -45,7 +45,7 @@ function ShowCommandToJoinCluster()
 
         WriteToConsole "Run this command on any new node to join this cluster (this command expires in 24 hours):"
         WriteToConsole "---------------- COPY BELOW THIS LINE ----------------"
-        $fullCommand= "curl -sSL $baseUrl/onprem/setupworker.sh?p=`$RANDOM -o setupworker.sh; bash setupworker.sh `"$joinCommand`""
+        $fullCommand= "curl -sSL $baseUrl/onprem/main.sh?p=`$RANDOM -o main.sh; bash main.sh `"$joinCommand`""
         if($prerelease){
             $fullCommand = "${fullCommand} -prerelease"
         }

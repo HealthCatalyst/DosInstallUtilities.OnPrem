@@ -110,6 +110,9 @@ function SetupNewNode()
     WriteToConsole " current repo list"
     sudo yum -y repolist
 
+    WriteToConsole "yum versionlock status"
+    sudo yum versionlock status
+
     WriteToConsole "docker versions available in repo "
     sudo yum -y --showduplicates list docker-ce
     sudo yum -y --showduplicates list container-selinux
