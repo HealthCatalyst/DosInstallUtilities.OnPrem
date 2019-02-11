@@ -51,7 +51,7 @@ function SetupWorker()
     SetupNewNode -baseUrl $baseUrl
 
     WriteToConsole "mounting network folder"
-    MountFolderFromSecrets -baseUrl $baseUrl
+    mountSharedFolder
 
     WriteToConsole "joining cluster"
     Write-Host "sudo $joincommand"
