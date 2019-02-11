@@ -135,7 +135,7 @@ function SetupNewNode()
     }
 
     # installYumPackages "docker-ce-${dockerversion}.el7.centos docker-ce-selinux-${dockerversion}.el7.centos"
-    lockPackageVersion "docker-ce container-selinux"
+    lockPackageVersion "docker-ce  docker-ce-selinux container-selinux"
 
     # https://kubernetes.io/docs/setup/independent/install-kubeadm/
     # log rotation for docker: https://docs.docker.com/config/daemon/

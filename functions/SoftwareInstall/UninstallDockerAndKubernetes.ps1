@@ -41,7 +41,7 @@ function UninstallDockerAndKubernetes()
         sudo kubeadm reset -f
     }
     sudo yum -y remove kubelet kubeadm kubectl kubernetes-cni
-    unlockPackageVersion "kubelet kubeadm kubectl kubernetes-cni"
+    unlockPackageVersion "kubelet kubeadm kubectl cri-tools kubernetes-cni"
 
     if ("$(command -v docker)") {
         sudo docker system prune -f
@@ -52,7 +52,7 @@ function UninstallDockerAndKubernetes()
     sudo yum -y remove docker docker-common docker-selinux docker-engine docker-ce docker-ce-selinux container-selinux
     sudo yum -y remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
     sudo yum -y remove docker-ce-cli containerd.io
-    unlockPackageVersion "docker-ce docker-ce-selinux"
+    unlockPackageVersion "docker-ce docker-ce-selinux container-selinux"
 
     WriteToConsole "Successfully uninstalled docker and kubernetes"
 
