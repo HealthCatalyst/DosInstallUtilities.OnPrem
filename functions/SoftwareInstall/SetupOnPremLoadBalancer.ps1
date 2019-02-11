@@ -62,7 +62,7 @@ function SetupOnPremLoadBalancer() {
 
     [string] $package = "nginx"
     [string] $packageInternal = "nginx-internal"
-    [string] $ngniximageTag = $kubeGlobals.ngniximageTag
+    [string] $ngniximageTag = $globals.ngniximageTag
 
     Write-Output "Removing old deployment"
     DeleteHelmPackage -package $package
