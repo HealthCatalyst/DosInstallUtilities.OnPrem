@@ -128,7 +128,7 @@ function SetupNewNode()
     # need to pass --setpot=obsoletes=0 due to this bug: https://github.com/docker/for-linux/issues/20#issuecomment-312122325
 
     sudo yum versionlock status
-    sudo yum install -y --setopt=obsoletes=0 docker-ce-${dockerversion}.el7.centos container-selinux-${dockerselinuxversion}.el7
+    sudo yum install -y --setopt=obsoletes=0 docker-ce-${dockerversion}.el7 container-selinux-${dockerselinuxversion}.el7
     $result = $LastExitCode
     if($result -ne 0){
         throw "Error yum install docker: $result"
