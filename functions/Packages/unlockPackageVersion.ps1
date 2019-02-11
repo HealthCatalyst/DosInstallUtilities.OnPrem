@@ -37,6 +37,8 @@ function unlockPackageVersion()
         sudo yum versionlock delete $name 2>&1 >> yum.log
     }
 
+    sudo yum versionlock status
+
     Write-Verbose 'unlockPackageVersion: Done'
 
 }

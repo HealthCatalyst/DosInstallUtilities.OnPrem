@@ -127,6 +127,7 @@ function SetupNewNode()
     Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
     # need to pass --setpot=obsoletes=0 due to this bug: https://github.com/docker/for-linux/issues/20#issuecomment-312122325
 
+    sudo yum versionlock status
     sudo yum install -y --setopt=obsoletes=0 docker-ce-${dockerversion}.el7.centos container-selinux-${dockerselinuxversion}.el7
     $result = $LastExitCode
     if($result -ne 0){
@@ -179,18 +180,15 @@ function SetupNewNode()
     WriteToConsole "installing kubernetes"
     Write-Host "using docker version ${dockerversion}, kubernetes version ${kubernetesversion}, cni version ${kubernetescniversion}"
 
+    sudo yum versionlock status
     sudo yum -y install cri-tools-${critoolsversion} kubelet-${kubernetesversion} kubeadm-${kubernetesversion} kubectl-${kubernetesversion} kubernetes-cni-${kubernetescniversion}
     $result = $LastExitCode
     if($result -ne 0){
         throw "yum install kubernetes: $result"
     }
 
-    lockPackageVersion "kubelet kubeadm kubectl cri-tools kubernetes-cni"
     WriteToConsole "locking versions of kubernetes so they don't get updated by yum update"
-    # sudo yum versionlock add kubelet
-    # sudo yum versionlock add kubeadm
-    # sudo yum versionlock add kubectl
-    # sudo yum versionlock add kubernetes-cni
+    lockPackageVersion "kubelet kubeadm kubectl cri-tools kubernetes-cni"
 
     Write-Host "setting up iptables for kubernetes in k8s.conf"
     # # Some users on RHEL/CentOS 7 have reported issues with traffic being routed incorrectly due to iptables being bypassed

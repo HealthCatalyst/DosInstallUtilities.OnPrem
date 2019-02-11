@@ -41,6 +41,8 @@ function lockPackageVersion()
         }
     }
 
+    sudo yum versionlock status
+
     Write-Verbose 'lockPackageVersion: Done'
 
 }
