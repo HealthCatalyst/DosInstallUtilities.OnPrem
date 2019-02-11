@@ -66,7 +66,14 @@ function ShowOnPremMenu()
                 ShowCommandToJoinCluster -baseUrl $baseUrl -prerelease $isPrerelease
             }
             '3' {
-                UninstallDockerAndKubernetes
+                Write-Warning "This will uninstall Docker and Kubernetes from this machine."
+
+                Do { $confirmation = Read-Host "This will uninstall Docker and Kubernetes from this machine.  Are you sure? (y/n)"}
+                while ([string]::IsNullOrWhiteSpace($confirmation))
+
+                if ($confirmation -eq 'y') {
+                    UninstallDockerAndKubernetes
+                }
             }
             '4' {
                 Write-Host "Current cluster: $(kubectl config current-context)"
